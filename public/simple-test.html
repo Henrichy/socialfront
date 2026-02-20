@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Simple API Test</title>
+</head>
+<body>
+    <h1>Direct API Test (No React)</h1>
+    <div id="results"></div>
+    <button onclick="testAPI()">Test API</button>
+    
+    <script>
+        const API_BASE_URL = 'http://localhost:5000';
+        
+        async function testAPI() {
+            const resultsDiv = document.getElementById('results');
+            resultsDiv.innerHTML = '<p>Testing...</p>';
+            
+            try {
+                console.log('Testing with base URL:', API_BASE_URL);
+                
+                // Test health
+                const healthResponse = await fetch(`${API_BASE_URL}/health`);
+                const healthData = await healthResponse.json();
+                resultsDiv.innerHTML += `<p>✅ Health: ${healthResponse.status} - ${JSON.stringify(healthData)}</p>`;
+                
+                // Test categories
+                const categoriesResponse = await fetch(`${API_BASE_URL}/api/categories`);
+                const categoriesData = await categoriesResponse.json();
+                resultsDiv.innerHTML += `<p>✅ Categories: ${categoriesResponse.status} - ${categoriesData.length} items</p>`;
+                
+            } catch (error) {
+                resultsDiv.innerHTML += `<p>❌ Error: ${error.message}</p>`;
+                console.error('Error:', error);
+            }
+        }
+        
+        // Auto-run test
+        testAPI();
+    </script>
+</body>
+</html>

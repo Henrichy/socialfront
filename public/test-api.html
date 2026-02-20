@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>API Test</title>
+</head>
+<body>
+    <h1>API Connection Test</h1>
+    <div id="results"></div>
+    
+    <script>
+        const baseUrl = 'http://localhost:5000';
+        const resultsDiv = document.getElementById('results');
+        
+        async function testAPI() {
+            resultsDiv.innerHTML = '<p>Testing API connection...</p>';
+            
+            try {
+                // Test health endpoint
+                const healthResponse = await fetch(`${baseUrl}/health`);
+                const healthData = await healthResponse.json();
+                
+                resultsDiv.innerHTML += `<p>✅ Health Check: ${healthResponse.status} - ${JSON.stringify(healthData)}</p>`;
+                
+                // Test categories endpoint
+                const categoriesResponse = await fetch(`${baseUrl}/api/categories`);
+                const categoriesData = await categoriesResponse.json();
+                
+                resultsDiv.innerHTML += `<p>✅ Categories: ${categoriesResponse.status} - Found ${categoriesData.length} categories</p>`;
+                
+                // Test accounts endpoint
+                const accountsResponse = await fetch(`${baseUrl}/api/accounts`);
+                const accountsData = await accountsResponse.json();
+                
+                resultsDiv.innerHTML += `<p>✅ Accounts: ${accountsResponse.status} - Found ${accountsData.accounts.length} accounts</p>`;
+                
+            } catch (error) {
+                resultsDiv.innerHTML += `<p>❌ Error: ${error.message}</p>`;
+                console.error('API Test Error:', error);
+            }
+        }
+        
+        // Run test on page load
+        testAPI();
+    </script>
+</body>
+</html>
